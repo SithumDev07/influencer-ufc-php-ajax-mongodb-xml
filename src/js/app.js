@@ -10,6 +10,15 @@ $(window).ready(function () {
                     document.getElementById("name").innerHTML = name;
                 })
             })
+        },
+        error: function (response) {
+
         }
     });
+
+    function populatePosts () {
+        const post = `
+        
+        `;
+    }
 })
