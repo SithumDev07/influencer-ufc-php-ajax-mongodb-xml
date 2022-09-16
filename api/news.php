@@ -1,27 +1,25 @@
 <?php
-$ufc_posts = simplexml_load_file("https://api.foxsports.com/v2/content/optimized-rss?partnerKey=MB0Wehpmuj2lUhuRhQaafhBjAJqaPU244mlTDK1i&size=30&tags=fs/ufc");
 
-$ufc_posts = $ufc_posts->children()->children();
+require "../database.php";
+$postsCollection = $db->selectCollection("posts");
 
-$xmlDoc = new SimpleXMLElement("<xml/>");
-
-foreach ($ufc_posts as $ufc_post) {
-    $mediaXml = $ufc_post->children(MEDIA_NAMESPACE);
-    if($ufc_post->title) {
-        $post = $xmlDoc->addChild("post");
-        $post->addChild("title", $ufc_post->title);
-        $post->addChild("description", $ufc_post->description);
-        $post->addChild("published", $ufc_post->pubDate);
-
-        foreach ($mediaXml->content->attributes() as $img => $value) {
-            $post->addChild("media", $value);
-        }
-    }
-}
 
 if($_SERVER["REQUEST_METHOD"] == "GET") {
-    header("Content-type: text/xml; charset=utf-8");
-    echo $xmlDoc->asXML();
+    header('content-type: text/xml');
+    $postData = $postsCollection->find();
+    $root = new SimpleXMLElement("<root />");
+    foreach ($postData as $doc) {
+        $json = MongoDB\BSON\toJSON(MongoDB\BSON\fromPHP($doc));
+        $json = json_decode($json, true);
+
+        $post = $root->addChild("post");
+        $post->addChild('title', $json['title']);
+        $post->addChild('description', $json['description']);
+        $post->addChild("category", $json["category"]);
+        $post->addChild('published', $json["published"]);
+        $post->addChild("imageUrl", $json["imageUrl"]);
+    }
+    echo $root->asXML();
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 }
