@@ -20,6 +20,10 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
         $post->addChild("imageUrl", $json["imageUrl"]);
     }
     echo $root->asXML();
-} elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
+}
+elseif ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_SERVER["QUERY_STRING"])) {
+    echo "You are getting the post with id " . $_SERVER["id"];
+}
+elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 }
