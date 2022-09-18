@@ -26,21 +26,31 @@ elseif ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_SERVER["QUERY_STRING"])) 
 }
 elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $title = $_POST["title"];
-    $category = $_POST["category"];
-    $description = $_POST["description"];
-    $published = $_POST["published"];
-    $imageUrl = $_POST["imageUrl"];
+//    $title = $_POST["title"];
+//    $category = $_POST["category"];
+//    $description = $_POST["description"];
+//    $published = $_POST["published"];
+//    $imageUrl = $_POST["imageUrl"];
+//
+//    $newEntry = [
+//        "title" => "" . $title,
+//        "category" => "" . $category,
+//        "description" => "" . $description,
+//        "published" => "" . $published,
+//        "imageUrl" => "" . $imageUrl
+//    ];
+//
+//    $postsCollection->insertOne($newEntry);
+//
+//    print_r($newEntry);
 
-    $newEntry = [
-        "title" => "" . $title,
-        "category" => "" . $category,
-        "description" => "" . $description,
-        "published" => "" . $published,
-        "imageUrl" => "" . $imageUrl
-    ];
+    $postData = file_get_contents('php://input');
 
-    $postsCollection->insertOne($newEntry);
+    $xml = simplexml_load_string($postData);
 
-    print_r($newEntry);
+//    $xml = $xml->children();
+
+    var_dump($xml);
+
+//    print_r($xml);
 }
