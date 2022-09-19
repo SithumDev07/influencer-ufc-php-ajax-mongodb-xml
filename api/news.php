@@ -25,32 +25,16 @@ elseif ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_SERVER["QUERY_STRING"])) 
     echo "You are getting the post with id " . $_SERVER["id"];
 }
 elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $post = [
+        "title" => "" . $_POST['news_title'],
+        "category" => "" . $_POST['news_category'],
+        "description" => "". $_POST['news_description'],
+        "published" => "" . $_POST['news_published'],
+        "imageUrl" => "" . $_POST['news_imageurl']
+    ];
 
-//    $title = $_POST["title"];
-//    $category = $_POST["category"];
-//    $description = $_POST["description"];
-//    $published = $_POST["published"];
-//    $imageUrl = $_POST["imageUrl"];
-//
-//    $newEntry = [
-//        "title" => "" . $title,
-//        "category" => "" . $category,
-//        "description" => "" . $description,
-//        "published" => "" . $published,
-//        "imageUrl" => "" . $imageUrl
-//    ];
-//
-//    $postsCollection->insertOne($newEntry);
-//
-//    print_r($newEntry);
+    $postsCollection->insertOne($post);
 
-    $postData = file_get_contents('php://input');
-
-    $xml = simplexml_load_string($postData);
-
-//    $xml = $xml->children();
-
-    var_dump($xml);
-
-//    print_r($xml);
+    header("./pages/home.html", true, 201);
+    exit();
 }
